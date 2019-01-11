@@ -1,4 +1,4 @@
-package com.github.assertion.context
+package com.github.assertion.core.context
 
 class Context {
 

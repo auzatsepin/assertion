@@ -1,4 +1,4 @@
-package com.github.assertion.context
+package com.github.assertion.core.context
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows

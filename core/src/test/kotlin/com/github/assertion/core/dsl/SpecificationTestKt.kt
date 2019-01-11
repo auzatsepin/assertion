@@ -1,6 +1,6 @@
-package com.github.assertion.dsl
+package com.github.assertion.core.dsl
 
-import com.github.assertion.context.Context
+import com.github.assertion.core.context.Context
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

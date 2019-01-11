@@ -1,4 +1,6 @@
 rootProject.name = 'assertion'
-include 'async-http'
-include 'dsl'
+include 'http'
+include 'core'
+include 'runner'
+include 'samples'
 
