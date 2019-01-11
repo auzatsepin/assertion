@@ -16,8 +16,3 @@ gradle-app.setting
 /dsl/out/
 /async-http/out/
 */build
-gradle/*
-gradlew
-gradlew.bat
-gradle-wrapper.jar
-gradle-wrapper.properties

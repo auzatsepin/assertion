@@ -20,6 +20,13 @@ allprojects {
         kotlinOptions.jvmTarget = "1.8"
     }
 
+    tasks.withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
 }
 
 dependencies {
@@ -28,3 +35,6 @@ dependencies {
     }
 }
 
+tasks.withType<Wrapper> {
+    gradleVersion = "5.1.1"
+}
