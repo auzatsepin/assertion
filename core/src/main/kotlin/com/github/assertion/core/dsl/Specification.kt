@@ -1,46 +1,47 @@
 package com.github.assertion.core.dsl
 
 import com.github.assertion.core.context.Context
+import java.lang.RuntimeException
 
 interface Action {
     fun perform(context: Context)
 }
 
 @DslMarker
-annotation class Spec
+annotation class SpecDsl
 
-@Spec
+@SpecDsl
 fun specification(context: Context, setup: SpecificationBuilder.() -> Unit): Specification {
     val builder = SpecificationBuilder(context)
     builder.setup()
     return builder.build()
 }
 
-@Spec
+@SpecDsl
 fun specification(setup: SpecificationBuilder.() -> Unit): Specification {
     return specification(Context(), setup)
 }
 
-@Spec
-class Specification(
-    private val context: Context,
-    private val actions: List<Action>
-) {
+@SpecDsl
+class Specification(private val actions: List<Action>) {
 
-    operator fun invoke() {
+    private lateinit var context: Context
+
+    fun invoke() {
+        if (!this::context.isInitialized) throw RuntimeException("Context not initialized")
         actions.forEach {
             it.perform(context)
         }
     }
 
-    infix fun with(context: Context) {
-        actions.forEach {
-            it.perform(context)
-        }
+    infix fun with(context: Context): Specification {
+        if (this::context.isInitialized) throw RuntimeException("Context already initialized")
+        this.context = context
+        return this
     }
 }
 
-@Spec
+@SpecDsl
 class SpecificationBuilder(private val context: Context) {
 
     private val actions = mutableListOf<Action>()
@@ -70,7 +71,7 @@ class SpecificationBuilder(private val context: Context) {
     }
 
     fun build(): Specification {
-        return Specification(context, actions)
+        return Specification(actions)
     }
 
     @Suppress("UNUSED_PARAMETER")

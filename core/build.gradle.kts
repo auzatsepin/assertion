@@ -9,6 +9,6 @@ val junitVersion : String by project
 dependencies {
     compile(kotlin("stdlib"))
     compile(kotlin("reflect"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testApi("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }

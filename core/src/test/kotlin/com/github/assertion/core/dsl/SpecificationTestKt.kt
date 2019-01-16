@@ -34,7 +34,7 @@ internal class SpecificationTest {
                     assertEquals(4, context["fourth"])
                 }
             })
-        }()
+        } with Context()
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class SpecificationTest {
             verify { context ->
                 assertEquals(3, context["third"])
             }
-        }()
+        } with Context()
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class SpecificationTest {
         specification(context) {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
-        }()
+        } with context
     }
 
     @Test

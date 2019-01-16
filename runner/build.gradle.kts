@@ -12,6 +12,7 @@ dependencies {
     implementation(kotlin("script-runtime"))
     implementation(kotlin("compiler-embeddable"))
     implementation(kotlin("script-util"))
+    implementation("org.junit.platform:junit-platform-launcher:1.2.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
