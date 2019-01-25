@@ -55,7 +55,7 @@ internal class SpecificationTest {
         val outCtxName = "out"
         val context = Context()
         context[inCtxName] = MultiplierIn(2, 2)
-        specification("actver") {
+        specification("execute") {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
         } with context

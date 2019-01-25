@@ -3,8 +3,8 @@ package com.github.assertion.samples
 import com.github.assertion.core.context.Context
 import com.github.assertion.core.dsl.Action
 import com.github.assertion.core.dsl.Specification
-import com.github.assertion.runner.Junit5Runner
-import com.github.assertion.runner.loader.ScriptLoader
+import com.github.assertion.core.junit.Junit5Runner
+import com.github.assertion.core.loader.ScriptLoader
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
@@ -46,14 +46,13 @@ class Test {
             .map { Files.newInputStream(it) })
             .map {
                 DynamicTest.dynamicTest(it.name) { it() }
-
             }
     }
 
 }
 
 fun main(args: Array<String>) {
-    val path = args[0] //todo picocli
+    val path = args[0]
     System.setProperty("scripts", path)
     val junit5Runner = Junit5Runner(Test::class.java)
     junit5Runner.run()

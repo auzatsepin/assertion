@@ -1,4 +1,4 @@
-package com.github.assertion.runner.loader
+package com.github.assertion.core.loader
 
 import java.io.InputStream
 import java.io.Reader
@@ -17,7 +17,7 @@ class ScriptLoader(
         val result = evaluation()
         result ?: Unit
     } catch (e: Exception) {
-        throw RuntimeException("Can't evaluate script")
+        throw RuntimeException(e)
     }
 
     inline fun <reified T> loadAndEval(script: String) = eval { engine.eval(script) }.castOrThrow<T>()

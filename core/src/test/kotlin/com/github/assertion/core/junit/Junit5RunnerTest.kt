@@ -1,4 +1,4 @@
-package com.github.assertion.runner
+package com.github.assertion.core.junit
 
 import org.junit.jupiter.api.Assertions.fail
 import org.junit.jupiter.api.Test

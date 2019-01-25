@@ -1,4 +1,4 @@
-package com.github.assertion.runner
+package com.github.assertion.core.junit
 
 import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder

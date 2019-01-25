@@ -1,4 +1,4 @@
-package com.github.assertion.runner.loader
+package com.github.assertion.core.loader
 
 import org.jetbrains.kotlin.script.jsr223.KotlinJsr223JvmLocalScriptEngine
 import org.junit.jupiter.api.Assertions.*
@@ -49,7 +49,7 @@ internal class ScriptLoaderTest {
 
     @Test
     fun `should load and evaluate multiple scripts from InputStreams`() {
-        val path = "/spec/success/"
+        val path = "/spec/"
         val specs = ScriptLoaderTest::class.java.getResource(path)
         if (specs == null) {
             fail<Void>("Not found spec directory")
@@ -58,10 +58,14 @@ internal class ScriptLoaderTest {
         if (walk == null) {
             fail<Void>("Not found scripts in spec directory")
         }
-        val scripts = walk.filter { !Files.isDirectory(it) }
-            .map { ScriptLoaderTest::class.java.getResourceAsStream("$path${it.fileName}") }
+        val scriptFiles = walk.filter { !Files.isDirectory(it) }
+            .map {
+                ScriptLoaderTest::class.java.getResourceAsStream("$path${it.fileName}")
+                    ?: throw RuntimeException("$path${it.fileName} not found")
+            }
             .collect(Collectors.toList())
-        ScriptLoader().loadAll<Unit>(scripts)
+        val loadAll = ScriptLoader().loadAll<Int>(scriptFiles)
+        assertEquals(2, loadAll.size)
     }
 
 }
