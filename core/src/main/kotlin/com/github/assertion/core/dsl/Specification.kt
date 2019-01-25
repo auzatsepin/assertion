@@ -1,7 +1,6 @@
 package com.github.assertion.core.dsl
 
 import com.github.assertion.core.context.Context
-import java.lang.RuntimeException
 
 interface Action {
     fun perform(context: Context)
@@ -11,23 +10,18 @@ interface Action {
 annotation class SpecDsl
 
 @SpecDsl
-fun specification(context: Context, setup: SpecificationBuilder.() -> Unit): Specification {
-    val builder = SpecificationBuilder(context)
+fun specification(name: String, setup: SpecificationBuilder.() -> Unit): Specification {
+    val builder = SpecificationBuilder(name)
     builder.setup()
     return builder.build()
 }
 
 @SpecDsl
-fun specification(setup: SpecificationBuilder.() -> Unit): Specification {
-    return specification(Context(), setup)
-}
-
-@SpecDsl
-class Specification(private val actions: List<Action>) {
+class Specification(val name: String, private val actions: List<Action>) {
 
     private lateinit var context: Context
 
-    fun invoke() {
+    operator fun invoke() {
         if (!this::context.isInitialized) throw RuntimeException("Context not initialized")
         actions.forEach {
             it.perform(context)
@@ -42,7 +36,7 @@ class Specification(private val actions: List<Action>) {
 }
 
 @SpecDsl
-class SpecificationBuilder(private val context: Context) {
+class SpecificationBuilder(private val name: String) {
 
     private val actions = mutableListOf<Action>()
 
@@ -71,7 +65,7 @@ class SpecificationBuilder(private val context: Context) {
     }
 
     fun build(): Specification {
-        return Specification(actions)
+        return Specification(name, actions)
     }
 
     @Suppress("UNUSED_PARAMETER")

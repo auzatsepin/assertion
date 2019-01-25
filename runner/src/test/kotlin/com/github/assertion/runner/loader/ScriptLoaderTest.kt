@@ -49,7 +49,7 @@ internal class ScriptLoaderTest {
 
     @Test
     fun `should load and evaluate multiple scripts from InputStreams`() {
-        val path = "/spec/"
+        val path = "/spec/success/"
         val specs = ScriptLoaderTest::class.java.getResource(path)
         if (specs == null) {
             fail<Void>("Not found spec directory")
@@ -59,9 +59,8 @@ internal class ScriptLoaderTest {
             fail<Void>("Not found scripts in spec directory")
         }
         val scripts = walk.filter { !Files.isDirectory(it) }
-            .map {
-                ScriptLoaderTest::class.java.getResourceAsStream("$path${it.fileName}")
-            }.collect(Collectors.toList())
+            .map { ScriptLoaderTest::class.java.getResourceAsStream("$path${it.fileName}") }
+            .collect(Collectors.toList())
         ScriptLoader().loadAll<Unit>(scripts)
     }
 
