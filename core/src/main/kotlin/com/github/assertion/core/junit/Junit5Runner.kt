@@ -4,14 +4,19 @@ import org.junit.platform.engine.discovery.DiscoverySelectors.selectClass
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder
 import org.junit.platform.launcher.core.LauncherFactory
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener
+import org.junit.platform.launcher.listeners.TestExecutionSummary
 import java.io.PrintWriter
 import java.io.StringWriter
 
-class Junit5Runner(private vararg val classes: Class<*>) {
+class Junit5Runner(private vararg val classes: Class<*>, val out: PrintWriter = PrintWriter(System.out)) {
+
+    private val success = 0
+
+    private val failed = 1
 
     private val listener = SummaryGeneratingListener()
 
-    fun run() {
+    fun run(): Int {
         val request = LauncherDiscoveryRequestBuilder
             .request()
             .selectors(classes.map {
@@ -21,7 +26,7 @@ class Junit5Runner(private vararg val classes: Class<*>) {
         val launcher = LauncherFactory.create()
         launcher.registerTestExecutionListeners(listener)
         launcher.execute(request)
-        listener.summary.printTo(PrintWriter(System.out))
+        listener.summary.printTo(out)
         println("Failed test details:")
         listener.summary.failures.forEach {
             println(
@@ -30,6 +35,15 @@ Test name ${it.testIdentifier.displayName}
 ${getStacktraceAsString(it.exception)}
 ==========================================""".trimIndent()
             )
+        }
+        return computeExitCode(listener.summary)
+    }
+
+    private fun computeExitCode(summary: TestExecutionSummary): Int {
+        return if (summary.totalFailureCount != 0L) {
+            failed
+        } else {
+            success
         }
     }
 

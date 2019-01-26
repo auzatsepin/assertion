@@ -39,14 +39,9 @@ class Test {
         val loader = ScriptLoader()
         return loader.loadAll<Specification>(scripts
             .filter { !Files.isDirectory(it) }
-            .map {
-                println(it)
-                it
-            }
+            .map { it }
             .map { Files.newInputStream(it) })
-            .map {
-                DynamicTest.dynamicTest(it.name) { it() }
-            }
+            .map { DynamicTest.dynamicTest(it.name) { it() } }
     }
 
 }
@@ -55,5 +50,6 @@ fun main(args: Array<String>) {
     val path = args[0]
     System.setProperty("scripts", path)
     val junit5Runner = Junit5Runner(Test::class.java)
-    junit5Runner.run()
+    val result = junit5Runner.run()
+    System.exit(result)
 }
