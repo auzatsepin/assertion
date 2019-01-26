@@ -1,6 +1,5 @@
 rootProject.name = 'assertion'
 include 'http'
 include 'core'
-include 'runner'
 include 'samples'
 

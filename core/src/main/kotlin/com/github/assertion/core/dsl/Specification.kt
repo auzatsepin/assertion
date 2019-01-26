@@ -7,41 +7,36 @@ interface Action {
 }
 
 @DslMarker
-annotation class Spec
+annotation class SpecDsl
 
-@Spec
-fun specification(context: Context, setup: SpecificationBuilder.() -> Unit): Specification {
-    val builder = SpecificationBuilder(context)
+@SpecDsl
+fun specification(name: String, setup: SpecificationBuilder.() -> Unit): Specification {
+    val builder = SpecificationBuilder(name)
     builder.setup()
     return builder.build()
 }
 
-@Spec
-fun specification(setup: SpecificationBuilder.() -> Unit): Specification {
-    return specification(Context(), setup)
-}
+@SpecDsl
+class Specification(val name: String, private val actions: List<Action>) {
 
-@Spec
-class Specification(
-    private val context: Context,
-    private val actions: List<Action>
-) {
+    private lateinit var context: Context
 
     operator fun invoke() {
+        if (!this::context.isInitialized) throw RuntimeException("Context not initialized")
         actions.forEach {
             it.perform(context)
         }
     }
 
-    infix fun with(context: Context) {
-        actions.forEach {
-            it.perform(context)
-        }
+    infix fun with(context: Context): Specification {
+        if (this::context.isInitialized) throw RuntimeException("Context already initialized")
+        this.context = context
+        return this
     }
 }
 
-@Spec
-class SpecificationBuilder(private val context: Context) {
+@SpecDsl
+class SpecificationBuilder(private val name: String) {
 
     private val actions = mutableListOf<Action>()
 
@@ -70,7 +65,7 @@ class SpecificationBuilder(private val context: Context) {
     }
 
     fun build(): Specification {
-        return Specification(context, actions)
+        return Specification(name, actions)
     }
 
     @Suppress("UNUSED_PARAMETER")

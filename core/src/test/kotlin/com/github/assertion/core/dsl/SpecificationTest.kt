@@ -8,7 +8,7 @@ internal class SpecificationTest {
 
     @Test
     fun `should execute spec with anonymous action`() {
-        specification {
+        specification("anon") {
             action(object : Action {
                 override fun perform(context: Context) {
                     context["third"] = 3
@@ -34,19 +34,19 @@ internal class SpecificationTest {
                     assertEquals(4, context["fourth"])
                 }
             })
-        }()
+        } with Context()
     }
 
     @Test
     fun `should execute spec with functional action`() {
-        specification {
+        specification("fact") {
             action { context ->
                 context["third"] = 3
             }
             verify { context ->
                 assertEquals(3, context["third"])
             }
-        }()
+        } with Context()
     }
 
     @Test
@@ -55,10 +55,10 @@ internal class SpecificationTest {
         val outCtxName = "out"
         val context = Context()
         context[inCtxName] = MultiplierIn(2, 2)
-        specification(context) {
+        specification("execute") {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
-        }()
+        } with context
     }
 
     @Test
@@ -67,13 +67,13 @@ internal class SpecificationTest {
         val outCtxName = "out"
         val context = Context()
         context[inCtxName] = MultiplierIn(2, 2)
-        specification(context) {
+        specification("already defined action") {
             action(MultiplyAction(inCtxName, outCtxName))
             verify { context ->
                 val result: MultiplierOut = context[outCtxName]
                 assertEquals(4, result.result)
             }
-        }
+        } with context
     }
 
     @Test
@@ -82,7 +82,7 @@ internal class SpecificationTest {
         val outCtxName = "out"
         val context = Context()
         context[inCtxName] = MultiplierIn(2, 2)
-        specification {
+        specification("with invoke") {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
         } with context

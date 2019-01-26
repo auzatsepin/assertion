@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm")
 }
@@ -7,8 +5,11 @@ plugins {
 val junitVersion : String by project
 
 dependencies {
-    compile(kotlin("stdlib"))
-    compile(kotlin("reflect"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("script-runtime"))
+    implementation(kotlin("compiler-embeddable"))
+    implementation(kotlin("script-util"))
+    api("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    implementation("org.junit.platform:junit-platform-launcher:1.2.0")
+    implementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
