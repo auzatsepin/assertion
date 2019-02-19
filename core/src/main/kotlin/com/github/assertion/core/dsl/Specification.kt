@@ -10,33 +10,28 @@ interface Action {
 annotation class SpecDsl
 
 @SpecDsl
-fun specification(name: String, setup: SpecificationBuilder.() -> Unit): Specification {
-    val builder = SpecificationBuilder(name)
+fun specification(name: String, context: Context = Context(), setup: SpecificationBuilder.() -> Unit): Specification {
+    val builder = SpecificationBuilder(name, context)
     builder.setup()
     return builder.build()
 }
 
 @SpecDsl
-class Specification(val name: String, private val actions: List<Action>) {
-
-    private lateinit var context: Context
+class Specification(val name: String, private val context: Context, private val actions: List<Action>) : Action {
 
     operator fun invoke() {
-        if (!this::context.isInitialized) throw RuntimeException("Context not initialized")
         actions.forEach {
             it.perform(context)
         }
     }
 
-    infix fun with(context: Context): Specification {
-        if (this::context.isInitialized) throw RuntimeException("Context already initialized")
-        this.context = context
-        return this
+    override fun perform(context: Context) {
+        this()
     }
 }
 
 @SpecDsl
-class SpecificationBuilder(private val name: String) {
+class SpecificationBuilder(private val name: String, private val context: Context) {
 
     private val actions = mutableListOf<Action>()
 
@@ -65,12 +60,14 @@ class SpecificationBuilder(private val name: String) {
     }
 
     fun build(): Specification {
-        return Specification(name, actions)
+        return Specification(name, context, actions)
     }
 
-    @Suppress("UNUSED_PARAMETER")
-    @Deprecated(level = DeprecationLevel.ERROR, message = "specification can't be nested.")
-    fun specification(setup: SpecificationBuilder.() -> Unit = {}) {
+    @SpecDsl
+    fun specification(name: String, setup: SpecificationBuilder.() -> Unit) {
+        val builder = SpecificationBuilder(name, context)
+        builder.setup()
+        actions += builder.build()
     }
 
 }

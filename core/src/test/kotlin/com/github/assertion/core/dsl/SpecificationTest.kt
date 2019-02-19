@@ -34,7 +34,7 @@ internal class SpecificationTest {
                     assertEquals(4, context["fourth"])
                 }
             })
-        } with Context()
+        }
     }
 
     @Test
@@ -46,7 +46,7 @@ internal class SpecificationTest {
             verify { context ->
                 assertEquals(3, context["third"])
             }
-        } with Context()
+        }
     }
 
     @Test
@@ -58,7 +58,7 @@ internal class SpecificationTest {
         specification("execute") {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
-        } with context
+        }
     }
 
     @Test
@@ -73,7 +73,7 @@ internal class SpecificationTest {
                 val result: MultiplierOut = context[outCtxName]
                 assertEquals(4, result.result)
             }
-        } with context
+        }
     }
 
     @Test
@@ -85,7 +85,7 @@ internal class SpecificationTest {
         specification("with invoke") {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
-        } with context
+        }
     }
 
 }

@@ -3,6 +3,7 @@ plugins {
 }
 
 val junitVersion : String by project
+val mockkVersion : String by project
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -12,4 +13,5 @@ dependencies {
     api("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     implementation("org.junit.platform:junit-platform-launcher:1.2.0")
     implementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
