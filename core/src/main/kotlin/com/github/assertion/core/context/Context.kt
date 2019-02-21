@@ -1,10 +1,14 @@
 package com.github.assertion.core.context
 
+import com.github.assertion.core.dsl.Action
+
 class Context {
 
     private val params = mutableMapOf<String, Any>()
 
     fun size() : Int = params.size
+
+    val problems = mutableMapOf<Action, Throwable>()
 
     @PublishedApi
     internal val paramsInternal: MutableMap<String, Any>
@@ -35,8 +39,9 @@ class Context {
     }
 
     override fun toString(): String {
-        return "Context(params=$params)"
+        return "Context(params=$params, problems=$problems)"
     }
+
 
 }
 
