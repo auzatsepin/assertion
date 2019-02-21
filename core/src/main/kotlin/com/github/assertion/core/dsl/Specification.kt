@@ -17,7 +17,7 @@ fun specification(name: String, context: Context = Context(), setup: Specificati
 }
 
 @SpecDsl
-class Specification(val name: String, private val context: Context, private val actions: List<Action>) {
+class Specification(val name: String, private val context: Context, private val actions: List<Action>) : Action {
 
     operator fun invoke(): Map<Action, Throwable> {
         val problems = mutableMapOf<Action, Throwable>()
@@ -31,6 +31,9 @@ class Specification(val name: String, private val context: Context, private val 
         return problems.toMap()
     }
 
+    override fun perform(context: Context) {
+        this()
+    }
 }
 
 @SpecDsl
