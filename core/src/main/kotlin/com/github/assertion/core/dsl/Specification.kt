@@ -17,17 +17,20 @@ fun specification(name: String, context: Context = Context(), setup: Specificati
 }
 
 @SpecDsl
-class Specification(val name: String, private val context: Context, private val actions: List<Action>) : Action {
+class Specification(val name: String, private val context: Context, private val actions: List<Action>) {
 
-    operator fun invoke() {
+    operator fun invoke(): Map<Action, Throwable> {
+        val problems = mutableMapOf<Action, Throwable>()
         actions.forEach {
-            it.perform(context)
+            try {
+                it.perform(context)
+            } catch (e: Throwable) {
+                problems[it] = e
+            }
         }
+        return problems.toMap()
     }
 
-    override fun perform(context: Context) {
-        this()
-    }
 }
 
 @SpecDsl

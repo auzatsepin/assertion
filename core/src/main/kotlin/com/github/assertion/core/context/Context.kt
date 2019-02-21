@@ -4,6 +4,8 @@ class Context {
 
     private val params = mutableMapOf<String, Any>()
 
+    fun size() : Int = params.size
+
     @PublishedApi
     internal val paramsInternal: MutableMap<String, Any>
         get() = params
