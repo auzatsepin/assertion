@@ -51,6 +51,27 @@ class NestedSpecificationTest {
                 }
             )
         }
+        assertEquals(2, context.size())
+    }
+
+    @Test
+    fun `should multiple failed`() {
+        val spec = specification("multiple") {
+
+            specification("ff") {
+                action {
+                    assertEquals(10, 15, "ff")
+                }
+            }
+
+            specification("sf") {
+                action {
+                    assertEquals(15, 25, "sf")
+                }
+            }
+        }
+        val problems = spec()
+        println(problems)
     }
 
 }

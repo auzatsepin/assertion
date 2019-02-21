@@ -11,9 +11,9 @@ val context = Context().apply {
     set("alternative", Pair(2, 3))
 }
 
-specification("add success") {
+specification("add success", context) {
     val additionAction = AdditionAction(inCtxName, outCtxName)
     val additionVerifier = AdditionVerifier(outCtxName, 5)
     action(additionAction)
     verify(additionVerifier)
-} with context
+}

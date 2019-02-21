@@ -74,11 +74,11 @@ class JunitTestFactory {
             Files.walk(Paths.get(path) ?: throw IllegalArgumentException("Not found scripts at path $path"))
                 .collect(Collectors.toList())
         val loader = ScriptLoader()
-        return loader.loadAll<Specification>(scripts
+        return scripts
             .filter { !Files.isDirectory(it) }
             .map { it }
-            .map { Files.newInputStream(it) })
-            .map { DynamicTest.dynamicTest(it.name) { it() } }
+            .associate { it to loader.load<Specification>(Files.newInputStream(it)) }
+            .map { DynamicTest.dynamicTest("${it.key}:${it.value.name}") { it.value() } }
     }
 
 }
