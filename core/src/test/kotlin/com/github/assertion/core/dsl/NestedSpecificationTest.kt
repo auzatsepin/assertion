@@ -70,8 +70,8 @@ class NestedSpecificationTest {
                 }
             }
         }
-        val problems = spec()
-        println(problems)
+        val context = spec()
+        assertEquals(2, context.problems.size)
     }
 
 }
