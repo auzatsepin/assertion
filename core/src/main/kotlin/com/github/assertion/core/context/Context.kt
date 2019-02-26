@@ -1,14 +1,15 @@
 package com.github.assertion.core.context
 
-import com.github.assertion.core.dsl.Action
+import java.io.PrintWriter
+import java.io.StringWriter
 
 class Context {
 
     private val params = mutableMapOf<String, Any>()
 
-    fun size() : Int = params.size
+    fun size(): Int = params.size
 
-    val problems = mutableMapOf<Action, Throwable>()
+    val problems = Problems()
 
     @PublishedApi
     internal val paramsInternal: MutableMap<String, Any>
@@ -42,7 +43,30 @@ class Context {
         return "Context(params=$params, problems=$problems)"
     }
 
+}
 
+class Problems {
+    private val problems = mutableMapOf<String, Throwable>()
+
+    fun add(name: String, throwable: Throwable) {
+        problems[name] = throwable
+    }
+
+    fun show() {
+        problems.forEach {entry ->
+            println(problemToString(entry.key, entry.value))
+        }
+    }
+
+    fun size()  = problems.size
+
+    private fun problemToString(name : String, throwable: Throwable): String {
+        val sw = StringWriter()
+        val pw = PrintWriter(sw, true)
+        pw.println("test ===> $name")
+        throwable.printStackTrace(pw)
+        return sw.buffer.toString()
+    }
 }
 
 class IncorrectParamTypeException(name: String, inputType: Class<*>, contextType: Class<*>) :
