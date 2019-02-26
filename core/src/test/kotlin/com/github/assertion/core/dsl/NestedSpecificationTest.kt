@@ -59,26 +59,24 @@ class NestedSpecificationTest {
         val spec = specification("multiple") {
 
             specification("ff") {
-                action {
+                action("ff_10_15") {
                     assertEquals(10, 15, "ff")
                 }
             }
 
             specification("sf") {
-                action {
+                action("sf_15_25") {
                     assertEquals(15, 25, "sf")
                 }
             }
         }
-        val context = spec()
-        assertEquals(2, context.problems.size)
+        assertEquals(2, spec().problems.size())
     }
 
 }
 
-class MockAction : Action {
+class MockAction : Action("mock") {
 
     override fun perform(context: Context) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

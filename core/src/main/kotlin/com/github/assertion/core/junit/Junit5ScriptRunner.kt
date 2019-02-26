@@ -15,7 +15,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.stream.Collectors
 
-class Junit5Runner(private vararg val classes: Class<*>, private val out: PrintWriter = PrintWriter(System.out)) {
+class Junit5ScriptRunner(private vararg val classes: Class<*>, private val out: PrintWriter = PrintWriter(System.out)) {
 
     private val success = 0
 
