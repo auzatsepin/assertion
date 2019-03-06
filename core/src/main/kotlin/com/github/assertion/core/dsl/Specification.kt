@@ -12,11 +12,10 @@ annotation class SpecDsl
 @SpecDsl
 fun specification(
     name: String,
-    context: Context = Context(),
-    catchError: Boolean = true,
+    catchError: Boolean = false,
     setup: SpecificationBuilder.() -> Unit
 ): Specification {
-    val builder = SpecificationBuilder(name, catchError, context)
+    val builder = SpecificationBuilder(name, catchError)
     builder.setup()
     return builder.build()
 }
@@ -24,12 +23,11 @@ fun specification(
 @SpecDsl
 class Specification(
     val name: String,
-    private val context: Context,
     private val actions: List<Action>,
-    private val catchErrors: Boolean = true
+    private val catchErrors: Boolean = false
 ) : Action(name) {
 
-    operator fun invoke(): Context {
+    operator fun invoke(context: Context = Context()): Context {
         actions.forEach {
             try {
                 it.perform(context)
@@ -45,15 +43,14 @@ class Specification(
     }
 
     override fun perform(context: Context) {
-        this()
+        this(context)
     }
 }
 
 @SpecDsl
 class SpecificationBuilder(
     private val name: String,
-    private val catchError: Boolean = true,
-    private val context: Context
+    private val catchError: Boolean = false
 ) {
 
     private val actions = mutableListOf<Action>()
@@ -83,12 +80,15 @@ class SpecificationBuilder(
     }
 
     fun build(): Specification {
-        return Specification(name, context, actions, catchError)
+        return Specification(name, actions, catchError)
     }
 
-    @SpecDsl
-    fun specification(name: String, catchErrors: Boolean = true, setup: SpecificationBuilder.() -> Unit) {
-        val builder = SpecificationBuilder(name, catchErrors, context)
+    fun include(spec: Specification) {
+        actions += spec
+    }
+
+    fun specification(name: String, catchErrors: Boolean = false, setup: SpecificationBuilder.() -> Unit) {
+        val builder = SpecificationBuilder(name, catchErrors)
         builder.setup()
         actions += builder.build()
     }
