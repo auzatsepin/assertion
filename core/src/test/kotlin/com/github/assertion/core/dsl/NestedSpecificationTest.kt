@@ -30,13 +30,13 @@ class NestedSpecificationTest {
         } answers {
             context["nestedOut"] = 200
         }
-        val spec = specification("spec", context) {
+        val spec = specification("spec") {
             action(firstMock)
             specification("innerSpec") {
                 action(secondMock)
             }
         }
-        spec()
+        spec(context)
         verify(exactly = 1) {
             firstMock.perform(
                 withArg {
@@ -56,7 +56,7 @@ class NestedSpecificationTest {
 
     @Test
     fun `should multiple failed`() {
-        val spec = specification("multiple") {
+        val spec = specification("multiple", true) {
 
             specification("ff") {
                 action("ff_10_15") {

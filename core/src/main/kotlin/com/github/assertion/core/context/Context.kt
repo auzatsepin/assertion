@@ -5,21 +5,21 @@ import java.io.StringWriter
 
 class Context {
 
-    private val params = mutableMapOf<String, Any>()
+    private val params = mutableMapOf<Any, Any>()
 
     fun size(): Int = params.size
 
     val problems = Problems()
 
     @PublishedApi
-    internal val paramsInternal: MutableMap<String, Any>
+    internal val paramsInternal: MutableMap<Any, Any>
         get() = params
 
-    operator fun set(name: String, value: Any) {
+    operator fun set(name: Any, value: Any) {
         params[name] = value
     }
 
-    inline operator fun <reified T> get(name: String): T {
+    inline operator fun <reified T> get(name: Any): T {
         val value = paramsInternal[name] ?: throw ParamNotFoundException(name)
         if (value is T) {
             return value
@@ -41,6 +41,13 @@ class Context {
 
     override fun toString(): String {
         return "Context(params=$params, problems=$problems)"
+    }
+
+    fun with(vararg pairs: Pair<Any, Any>): Context {
+        pairs.forEach {
+            params[it.first] = it.second
+        }
+        return this
     }
 
 }
@@ -69,11 +76,11 @@ class Problems {
     }
 }
 
-class IncorrectParamTypeException(name: String, inputType: Class<*>, contextType: Class<*>) :
+class IncorrectParamTypeException(name: Any, inputType: Class<*>, contextType: Class<*>) :
     UnsupportedOperationException() {
     override val message: String? = "Found param with name -> $name but type is incorrect: $inputType != $contextType"
 }
 
-class ParamNotFoundException(name: String) : java.lang.UnsupportedOperationException() {
+class ParamNotFoundException(name: Any) : java.lang.UnsupportedOperationException() {
     override val message: String? = "Param [$name] not found"
 }
