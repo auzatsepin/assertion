@@ -2,8 +2,8 @@ package com.github.assertion.core.dsl
 
 import com.github.assertion.core.context.Context
 
-abstract class Action(val actionName: String) {
-    abstract fun perform(context: Context)
+interface Action {
+    fun perform(context: Context)
 }
 
 @DslMarker
@@ -12,10 +12,9 @@ annotation class SpecDsl
 @SpecDsl
 fun specification(
     name: String,
-    catchError: Boolean = false,
     setup: SpecificationBuilder.() -> Unit
 ): Specification {
-    val builder = SpecificationBuilder(name, catchError)
+    val builder = SpecificationBuilder(name)
     builder.setup()
     return builder.build()
 }
@@ -23,20 +22,15 @@ fun specification(
 @SpecDsl
 class Specification(
     val name: String,
-    private val actions: List<Action>,
-    private val catchErrors: Boolean = false
-) : Action(name) {
+    private val actions: List<Action>
+) : Action {
 
     operator fun invoke(context: Context = Context()): Context {
         actions.forEach {
             try {
                 it.perform(context)
             } catch (e: Throwable) {
-                if (catchErrors) {
-                    context.problems.add(it.actionName, e)
-                } else {
-                    throw e
-                }
+                throw e
             }
         }
         return context
@@ -50,13 +44,12 @@ class Specification(
 @SpecDsl
 class SpecificationBuilder(
     private val name: String,
-    private val catchError: Boolean = false
+    private val actions: MutableList<Action> = mutableListOf()
 ) {
 
-    private val actions = mutableListOf<Action>()
 
-    fun action(name: String, action: (Context) -> Unit) {
-        actions += object : Action(name) {
+    fun action(action: (Context) -> Unit) {
+        actions += object : Action {
             override fun perform(context: Context) {
                 action(context)
             }
@@ -67,8 +60,8 @@ class SpecificationBuilder(
         actions += action
     }
 
-    fun verify(name: String, verifier: (Context) -> Unit) {
-        actions += object : Action(name) {
+    fun verify(verifier: (Context) -> Unit) {
+        actions += object : Action {
             override fun perform(context: Context) {
                 verifier(context)
             }
@@ -80,15 +73,15 @@ class SpecificationBuilder(
     }
 
     fun build(): Specification {
-        return Specification(name, actions, catchError)
+        return Specification(name, actions)
     }
 
     fun include(spec: Specification) {
         actions += spec
     }
 
-    fun specification(name: String, catchErrors: Boolean = false, setup: SpecificationBuilder.() -> Unit) {
-        val builder = SpecificationBuilder(name, catchErrors)
+    fun specification(name: String, setup: SpecificationBuilder.() -> Unit) {
+        val builder = SpecificationBuilder(name)
         builder.setup()
         actions += builder.build()
     }

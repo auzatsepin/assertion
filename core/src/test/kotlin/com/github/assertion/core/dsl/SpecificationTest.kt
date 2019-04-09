@@ -1,6 +1,7 @@
 package com.github.assertion.core.dsl
 
 import com.github.assertion.core.context.Context
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -12,27 +13,27 @@ internal class SpecificationTest {
     @Test
     fun `should execute spec with anonymous action`() {
         specification("anon") {
-            action(object : Action("third_set") {
+            action(object : Action {
                 override fun perform(context: Context) {
                     context["third"] = 3
                 }
             })
-            verify(object : Action("third_get") {
+            verify(object : Action {
                 override fun perform(context: Context) {
                     assertEquals(3, context["third"])
                 }
             })
-            verify(object : Action("third_get") {
+            verify(object : Action {
                 override fun perform(context: Context) {
                     assertEquals(3, context["third"])
                 }
             })
-            action(object : Action("fourth_set") {
+            action(object : Action {
                 override fun perform(context: Context) {
                     context["fourth"] = 4
                 }
             })
-            verify(object : Action("fourth_get") {
+            verify(object : Action {
                 override fun perform(context: Context) {
                     assertEquals(4, context["fourth"])
                 }
@@ -43,10 +44,10 @@ internal class SpecificationTest {
     @Test
     fun `should execute spec with functional action`() {
         specification("fact") {
-            action("a_fact_third") { context ->
+            action { context ->
                 context["third"] = 3
             }
-            verify("v_fact_third") { context ->
+            verify { context ->
                 assertEquals(3, context["third"])
             }
         }
@@ -72,7 +73,7 @@ internal class SpecificationTest {
         context[inCtxName] = MultiplierIn(2, 2)
         specification("already defined action") {
             action(MultiplyAction(inCtxName, outCtxName))
-            verify("v_4_result") { context ->
+            verify { context ->
                 val result: MultiplierOut = context[outCtxName]
                 assertEquals(4, result.result)
             }
@@ -96,9 +97,9 @@ internal class SpecificationTest {
         val ex = Assertions.assertThrows(
             AssertionFailedError::class.java
         ) {
-            specification("error", catchError = false) {
+            specification("error") {
 
-                action("fail") {
+                action() {
                     assertEquals("25", "50")
                 }
 
@@ -113,7 +114,7 @@ data class MultiplierIn(val first: Int, val second: Int)
 
 data class MultiplierOut(val result: Int)
 
-class MultiplyAction(private val inCtxName: String, private val outCtxName: String) : Action("ma") {
+class MultiplyAction(private val inCtxName: String, private val outCtxName: String) : Action {
 
     override fun perform(context: Context) {
         val multiplierIn: MultiplierIn = context[inCtxName]
@@ -122,7 +123,7 @@ class MultiplyAction(private val inCtxName: String, private val outCtxName: Stri
 
 }
 
-class MultiplyVerifier(private val outCtxName: String, private val expected: Int) : Action("mv") {
+class MultiplyVerifier(private val outCtxName: String, private val expected: Int) : Action {
 
     override fun perform(context: Context) {
         val out: MultiplierOut = context[outCtxName]

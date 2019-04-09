@@ -54,28 +54,9 @@ class NestedSpecificationTest {
         assertEquals(2, context.size())
     }
 
-    @Test
-    fun `should multiple failed`() {
-        val spec = specification("multiple", true) {
-
-            specification("ff") {
-                action("ff_10_15") {
-                    assertEquals(10, 15, "ff")
-                }
-            }
-
-            specification("sf") {
-                action("sf_15_25") {
-                    assertEquals(15, 25, "sf")
-                }
-            }
-        }
-        assertEquals(2, spec().problems.size())
-    }
-
 }
 
-class MockAction : Action("mock") {
+class MockAction : Action {
 
     override fun perform(context: Context) {
     }

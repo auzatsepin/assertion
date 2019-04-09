@@ -16,7 +16,7 @@ class ImplicitSumTest {
     companion object : ITest {
         override fun spec(): Specification {
             return specification("sum") {
-                action("sum") { context ->
+                action() { context ->
                     val p: Int = context[SumRq::class]
                     context[SumRs::class] = p + p
                 }
@@ -37,7 +37,7 @@ class ImplicitMulTest : ITest {
 
     override fun spec(): Specification {
         return specification("mul") {
-            action("mul") { context ->
+            action() { context ->
                 val p: Int = context[SumRs::class]
                 context[MulRs::class] = p * p
             }

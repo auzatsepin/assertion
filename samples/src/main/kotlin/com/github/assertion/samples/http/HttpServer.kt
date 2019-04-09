@@ -47,7 +47,7 @@ fun main() {
                 }
             }
             put("/card/issue/") {
-                val cardRq = call.receive(IssueCardRq::class)
+                val cardRq = call.receive(CardIssueRq::class)
                 log.info("Receive issue request $cardRq")
                 val rs = cardService.issue(cardRq)
                 log.debug("Successfully issue card $rs")

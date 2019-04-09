@@ -2,10 +2,11 @@ package com.github.assertion.core.context
 
 import java.io.PrintWriter
 import java.io.StringWriter
+import java.util.concurrent.ConcurrentHashMap
 
 class Context {
 
-    private val params = mutableMapOf<Any, Any>()
+    private val params = ConcurrentHashMap<Any, Any>()
 
     fun size(): Int = params.size
 

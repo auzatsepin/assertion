@@ -2,9 +2,9 @@ package com.github.assertion.samples.http
 
 import java.util.*
 
-data class IssueCardRq(val id: String)
+data class CardIssueRq(val id: String)
 
-data class IssueCardRs(val id: String, val pan: String, val psn: Int, val rc: Int = 0)
+data class CardIssueRs(val id: String, val pan: String, val psn: Int, val rc: Int = 0)
 
 data class ChangeCardStatusRq(val id: String, val status: String)
 
@@ -39,15 +39,15 @@ class CardService {
     private val cards = mutableMapOf<String, Card>()
     private val idx = mutableMapOf<Pair<String, Int>, String>()
 
-    fun issue(rq: IssueCardRq): IssueCardRs {
+    fun issue(issueRq: CardIssueRq): CardIssueRs {
         val pan = (1..16)
             .map { kotlin.random.Random.nextInt(0, panPool.size) }
             .map(panPool::get)
             .joinToString("")
-        val card = Card(rq.id, pan, Status("new"), UUID.randomUUID().toString())
-        cards[rq.id] = card
-        idx[Pair(pan, 1)] = rq.id
-        return IssueCardRs(rq.id, card.pan, card.psn)
+        val card = Card(issueRq.id, pan, Status("new"), UUID.randomUUID().toString())
+        cards[issueRq.id] = card
+        idx[Pair(pan, 1)] = issueRq.id
+        return CardIssueRs(issueRq.id, card.pan, card.psn)
     }
 
     fun status(rq: ChangeCardStatusRq): ChangeCardStatusRs {

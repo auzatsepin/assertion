@@ -11,7 +11,7 @@ class CustomSumTest {
     companion object : ITest {
         override fun spec(): Specification {
             return specification("sum") {
-                action("sum") { context ->
+                action() { context ->
                     val p: Int = context["sp"]
                     context["sr"] = p + p
                 }
@@ -32,7 +32,7 @@ class CustomMulTest : ITest {
 
     override fun spec(): Specification {
         return specification("mul") {
-            action("mul") { context ->
+            action() { context ->
                 val p: Int = context["sr"]
                 context["mr"] = p * p
             }

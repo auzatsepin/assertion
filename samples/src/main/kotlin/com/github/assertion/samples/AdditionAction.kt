@@ -6,7 +6,7 @@ import com.github.assertion.core.junit.Junit5ScriptRunner
 import com.github.assertion.core.junit.JunitTestFactory
 import org.junit.jupiter.api.Assertions.assertEquals
 
-class AdditionAction(private val inCtxName: String, private val outCtxName: String) : Action("aa") {
+class AdditionAction(private val inCtxName: String, private val outCtxName: String) : Action {
 
     override fun perform(context: Context) {
         val pair: Pair<Int, Int> = context[inCtxName]
@@ -14,7 +14,7 @@ class AdditionAction(private val inCtxName: String, private val outCtxName: Stri
     }
 }
 
-class AdditionVerifier(private val inCtxName: String, private val expected: Int) : Action("av") {
+class AdditionVerifier(private val inCtxName: String, private val expected: Int) : Action {
 
     override fun perform(context: Context) {
         val result: Int = context[inCtxName]

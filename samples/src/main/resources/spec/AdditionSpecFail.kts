@@ -14,7 +14,7 @@ specification("multiple fail") {
     }
 
     specification("asd") {
-        action("asd_5_10") {
+        action() {
             assertEquals(5, 10)
         }
     }
