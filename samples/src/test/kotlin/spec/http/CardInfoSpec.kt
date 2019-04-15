@@ -5,6 +5,7 @@ import com.github.assertion.core.dsl.Specification
 import com.github.assertion.core.dsl.specification
 import com.github.assertion.samples.http.CardInfoRq
 import com.github.assertion.samples.http.CardInfoRs
+import com.github.assertion.samples.http.CardIssueRs
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -19,7 +20,7 @@ class CardInfoSpec {
             return specification("getCardInfo") {
                 action { context ->
                     runBlocking {
-                        val rq: CardInfoRq = context[CardInfoRq::class]
+                        val rq = resolve(context)
                         val executeService =
                             ExecuteService("http://localhost:8080/card/info/?id=${rq.id}&pan=${rq.pan}&psn=${rq.psn}")
                         val response = executeService.get<CardInfoRs>()
@@ -28,6 +29,13 @@ class CardInfoSpec {
                     }
                 }
             }
+        }
+
+        private fun resolve(context: Context): CardInfoRq {
+            val issue: CardIssueRs = context[CardIssueRs::class]
+            val rq = CardInfoRq(issue.id, issue.pan, issue.psn)
+            context[CardInfoRq::class] = rq
+            return rq
         }
     }
 

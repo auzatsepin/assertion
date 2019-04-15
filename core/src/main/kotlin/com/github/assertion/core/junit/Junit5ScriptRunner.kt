@@ -1,5 +1,6 @@
 package com.github.assertion.core.junit
 
+import com.github.assertion.core.context.Context
 import com.github.assertion.core.dsl.Specification
 import com.github.assertion.core.loader.ScriptLoader
 import org.junit.jupiter.api.DynamicTest
@@ -78,7 +79,7 @@ class JunitTestFactory {
             .filter { !Files.isDirectory(it) }
             .map { it }
             .associate { it to loader.load<Specification>(Files.newInputStream(it)) }
-            .map { DynamicTest.dynamicTest("${it.key}:${it.value.name}") { it.value() } }
+            .map { DynamicTest.dynamicTest("${it.key}:${it.value.name}") { it.value(Context()) } }
     }
 
 }

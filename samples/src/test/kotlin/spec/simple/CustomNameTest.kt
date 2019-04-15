@@ -1,10 +1,11 @@
-package spec
+package spec.simple
 
 import com.github.assertion.core.context.Context
 import com.github.assertion.core.dsl.Specification
 import com.github.assertion.core.dsl.specification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import spec.ITest
 
 class CustomSumTest {
 

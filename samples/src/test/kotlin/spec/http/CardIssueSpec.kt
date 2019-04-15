@@ -17,7 +17,7 @@ class CardIssueSpec {
 
         override fun spec(): Specification {
             return specification("getCardInfo") {
-                action() { context ->
+                action { context ->
                     runBlocking {
                         val issueRq: CardIssueRq = context[CardIssueRq::class]
                         val executeService =

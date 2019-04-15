@@ -103,7 +103,7 @@ internal class SpecificationTest {
                     assertEquals("25", "50")
                 }
 
-            }.invoke()
+            }.invoke(Context())
         }
         assertNotNull(ex)
     }

@@ -23,5 +23,8 @@ dependencies {
     compile("io.ktor:ktor-client-json:$ktorVersion")
     compile("io.ktor:ktor-client-jackson:$ktorVersion")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    compile("org.slf4j:slf4j-api:1.7.26")
+    compile("ch.qos.logback:logback-core:$logbackVersion")
     compile("ch.qos.logback:logback-classic:$logbackVersion")
+    compile("io.ktor:ktor-client-logging-jvm:$ktorVersion")
 }

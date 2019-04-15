@@ -1,5 +1,7 @@
 package com.github.assertion.samples.http
 
+import arrow.core.Option
+import arrow.core.Some
 import java.util.*
 
 data class CardIssueRq(val id: String)
@@ -56,13 +58,13 @@ class CardService {
         return ChangeCardStatusRs(rq.id)
     }
 
-    fun info(rq: CardInfoRq): CardInfoRs {
-        val id = idx[Pair(rq.pan, rq.psn)] ?: return CardInfoRs(rq.id, rc = 96)
+    fun info(rq: CardInfoRq): Option<CardInfoRs> {
+        val id = idx[Pair(rq.pan, rq.psn)] ?: return Some(CardInfoRs(rq.id, rc = 96))
         val card = cards[id]
         return if (card == null) {
-            CardInfoRs(rq.id, rc = 96)
+            Some(CardInfoRs(rq.id, rc = 96))
         } else {
-            CardInfoRs(rq.id, card)
+            Some(CardInfoRs(rq.id, card))
         }
     }
 

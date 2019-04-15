@@ -22,10 +22,10 @@ fun specification(
 @SpecDsl
 class Specification(
     val name: String,
-    private val actions: List<Action>
+    internal val actions: List<Action>
 ) : Action {
 
-    operator fun invoke(context: Context = Context()): Context {
+    infix operator fun invoke(context: Context): Context {
         actions.forEach {
             try {
                 it.perform(context)
@@ -77,7 +77,7 @@ class SpecificationBuilder(
     }
 
     fun include(spec: Specification) {
-        actions += spec
+        actions += spec.actions
     }
 
     fun specification(name: String, setup: SpecificationBuilder.() -> Unit) {
