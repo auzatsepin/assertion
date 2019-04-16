@@ -18,24 +18,20 @@ class CompositeSpec {
             include(CardIssueSpec.spec())
             //verify issue card result
             verify { context ->
-                println("verify 1")
                 val rs: CardIssueRs = context[CardIssueRs::class]
                 Assertions.assertEquals(0, rs.rc)
                 Assertions.assertNotNull(rs.id)
                 Assertions.assertNotNull(rs.pan)
                 Assertions.assertNotNull(rs.psn)
-                println(rs)
             }
             //get info by issued card
             include(CardInfoSpec.spec())
             //get info by issued card
             verify { context ->
-                println("verify 2")
                 val rs: CardInfoRs = context[CardInfoRs::class]
                 Assertions.assertEquals(0, rs.rc)
                 Assertions.assertNotNull(rs.id)
                 Assertions.assertNotNull(rs.card)
-                println(rs)
             }
         } invoke Context().with(CardIssueRq::class to CardIssueRq(UUID.randomUUID().toString()))
     }

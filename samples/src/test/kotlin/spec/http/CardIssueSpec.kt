@@ -1,15 +1,11 @@
 package spec.http
 
-import com.github.assertion.core.context.Context
 import com.github.assertion.core.dsl.Specification
 import com.github.assertion.core.dsl.specification
 import com.github.assertion.samples.http.CardIssueRq
 import com.github.assertion.samples.http.CardIssueRs
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
 import spec.ITest
-import java.util.*
 
 class CardIssueSpec {
 
@@ -30,15 +26,4 @@ class CardIssueSpec {
             }
         }
     }
-
-    @Test
-    fun issueCard() {
-        val context = CardIssueSpec.spec().invoke(
-            Context().with(CardIssueRq::class to CardIssueRq(UUID.randomUUID().toString()))
-        )
-        val rs: CardIssueRs = context[CardIssueRs::class]
-        Assertions.assertNotNull(rs)
-        Assertions.assertEquals(0, rs.rc)
-    }
-
 }

@@ -39,37 +39,37 @@ fun main() {
         routing {
             get("/ping/{id?}") {
                 call.parameters["id"]?.let { id ->
-                    log.info("receive ping request with id -> $id")
+                    println("receive ping request with id -> $id")
                     call.respond(Pong("pong", Instant.now(), id))
                 } ?: kotlin.run {
-                    log.info("receive ping request without id")
+                    println("receive ping request without id")
                     call.respond(HttpStatusCode.BadRequest, Error())
                 }
             }
             put("/card/issue/") {
                 val cardRq = call.receive(CardIssueRq::class)
-                log.info("Receive issue request $cardRq")
+                println("Receive issue request $cardRq")
                 val rs = cardService.issue(cardRq)
-                log.info("Successfully issue card $rs")
+                println("Successfully issue card $rs")
                 call.respond(rs)
             }
             post("/card/status") {
                 val statusRq = call.receive(ChangeCardStatusRq::class)
-                log.info("Receive change status request $statusRq")
+                println("Receive change status request $statusRq")
                 val rs = cardService.status(statusRq)
-                log.info("Successfully change status $rs")
+                println("Successfully change status $rs")
                 call.respond(rs)
             }
             get("/card/info/") {
                 val id = call.request.queryParameters["id"]
                 val pan = call.request.queryParameters["pan"]
                 val psn = Integer.valueOf(call.request.queryParameters["psn"])
-                log.info("Receive info request with id: $id, pan: $pan, psn: $psn")
+                println("Receive info request with id: $id, pan: $pan, psn: $psn")
                 Objects.requireNonNull(id, "id")
                 Objects.requireNonNull(id, "pan")
                 Objects.requireNonNull(id, "psn")
                 val card = cardService.info(CardInfoRq(id!!, pan!!, psn!!))
-                log.info("send response $card")
+                println("send response $card")
                 call.respond(card)
             }
 

@@ -98,8 +98,7 @@ internal class SpecificationTest {
             AssertionFailedError::class.java
         ) {
             specification("error") {
-
-                action() {
+                action {
                     assertEquals("25", "50")
                 }
 
