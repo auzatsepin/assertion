@@ -1,11 +1,11 @@
 package spec.simple
 
 import com.github.assertion.core.context.Context
+import com.github.assertion.core.dsl.Spec
 import com.github.assertion.core.dsl.Specification
 import com.github.assertion.core.dsl.specification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import spec.ITest
 
 data class SumRq(val arg : Int)
 data class SumRs(val arg : Int)
@@ -14,10 +14,10 @@ data class MulRs(val arg : Int)
 
 class ImplicitSumTest {
 
-    companion object : ITest {
+    companion object : Spec {
         override fun spec(): Specification {
             return specification("sum") {
-                action() { context ->
+                action { context ->
                     val p: Int = context[SumRq::class]
                     context[SumRs::class] = p + p
                 }
@@ -34,11 +34,11 @@ class ImplicitSumTest {
 
 }
 
-class ImplicitMulTest : ITest {
+class ImplicitMulTest : Spec {
 
     override fun spec(): Specification {
         return specification("mul") {
-            action() { context ->
+            action { context ->
                 val p: Int = context[SumRs::class]
                 context[MulRs::class] = p * p
             }

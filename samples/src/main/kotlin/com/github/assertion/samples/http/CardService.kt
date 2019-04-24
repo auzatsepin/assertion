@@ -4,18 +4,15 @@ import java.util.*
 
 data class CardIssueRq(val id: String)
 
-data class CardIssueRs(val id: String, val pan: String, val psn: Int, val rc: Int = 0)
-
-data class ChangeCardStatusRq(val id: String, val status: String)
-
-data class ChangeCardStatusRs(
-    val id: String,
-    val rc: Int = 0
-)
-
 data class CardInfoRq(val id: String, val pan: String, val psn: Int)
 
+data class CardStatusRq(val id: String, val status: String)
+
+data class CardIssueRs(val id: String, val pan: String, val psn: Int, val rc: Int = 0)
+
 data class CardInfoRs(val id: String, val card: Card? = null, val rc: Int = 0)
+
+data class CardStatusRs(val id: String, val rc: Int = 0, val card : Card? = null)
 
 data class Status(val status: String) {
 
@@ -50,10 +47,10 @@ class CardService {
         return CardIssueRs(issueRq.id, card.pan, card.psn)
     }
 
-    fun status(rq: ChangeCardStatusRq): ChangeCardStatusRs {
-        val card = cards[rq.id] ?: return ChangeCardStatusRs(rq.id, rc = 96)
+    fun status(rq: CardStatusRq): CardStatusRs {
+        val card = cards[rq.id] ?: return CardStatusRs(rq.id, rc = 96)
         cards[rq.id] = card.copy(status = card.status.change(rq.status))
-        return ChangeCardStatusRs(rq.id)
+        return CardStatusRs(rq.id, card = card)
     }
 
     fun info(rq: CardInfoRq): CardInfoRs {

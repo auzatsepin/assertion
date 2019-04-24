@@ -1,18 +1,18 @@
 package spec.simple
 
 import com.github.assertion.core.context.Context
+import com.github.assertion.core.dsl.Spec
 import com.github.assertion.core.dsl.Specification
 import com.github.assertion.core.dsl.specification
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import spec.ITest
 
 class CustomSumTest {
 
-    companion object : ITest {
+    companion object : Spec {
         override fun spec(): Specification {
             return specification("sum") {
-                action() { context ->
+                action { context ->
                     val p: Int = context["sp"]
                     context["sr"] = p + p
                 }
@@ -29,11 +29,11 @@ class CustomSumTest {
 
 }
 
-class CustomMulTest : ITest {
+class CustomMulTest : Spec {
 
     override fun spec(): Specification {
         return specification("mul") {
-            action() { context ->
+            action { context ->
                 val p: Int = context["sr"]
                 context["mr"] = p * p
             }

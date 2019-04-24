@@ -21,7 +21,6 @@ fun specification(
 
 @SpecDsl
 class Specification(
-    val name: String,
     internal val actions: List<Action>
 ) : Action {
 
@@ -69,11 +68,11 @@ class SpecificationBuilder(
     }
 
     fun verify(verifier: Action) {
-        actions += verifier
+        action(verifier)
     }
 
     fun build(): Specification {
-        return Specification(name, actions)
+        return Specification(actions)
     }
 
     fun include(spec: Specification) {
