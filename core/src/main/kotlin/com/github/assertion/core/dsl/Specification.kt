@@ -11,10 +11,9 @@ annotation class SpecDsl
 
 @SpecDsl
 fun specification(
-    name: String,
     setup: SpecificationBuilder.() -> Unit
 ): Specification {
-    val builder = SpecificationBuilder(name)
+    val builder = SpecificationBuilder()
     builder.setup()
     return builder.build()
 }
@@ -42,7 +41,6 @@ class Specification(
 
 @SpecDsl
 class SpecificationBuilder(
-    private val name: String,
     private val actions: MutableList<Action> = mutableListOf()
 ) {
 
@@ -80,7 +78,7 @@ class SpecificationBuilder(
     }
 
     fun specification(name: String, setup: SpecificationBuilder.() -> Unit) {
-        val builder = SpecificationBuilder(name)
+        val builder = SpecificationBuilder()
         builder.setup()
         actions += builder.build()
     }

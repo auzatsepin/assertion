@@ -16,7 +16,7 @@ class ResolverSpec : AbstractTest() {
     @Test
     fun `should change status and get info for exist card`() {
         val issueContext = Context(CardIssueRq::class to CardIssueRq(UUID.randomUUID().toString()))
-        specification("issue card") {
+        specification {
             include(CardIssueSpec().spec())
             verify { context ->
                 val rs: CardIssueRs = context[CardIssueRs::class]
@@ -24,14 +24,14 @@ class ResolverSpec : AbstractTest() {
             }
         } invoke (issueContext)
         val issueRsContext = Context(CardIssueRs::class to issueContext[CardIssueRs::class])
-        specification("get card info") {
+        specification {
             include(CardInfoSpec().spec())
             verify { context ->
                 val rs: CardInfoRs = context[CardInfoRs::class]
                 Assertions.assertEquals(0, rs.rc)
             }
         } invoke issueRsContext
-        specification("change card status") {
+        specification {
             include(CardStatusSpec().spec())
             verify { context ->
                 val rs: CardStatusRs = context[CardStatusRs::class]
@@ -39,7 +39,7 @@ class ResolverSpec : AbstractTest() {
             }
         } invoke issueRsContext
         val statusContext = Context(CardStatusRs::class to issueRsContext[CardStatusRs::class])
-        specification("get card info with status") {
+        specification {
             include(CardInfoSpec().spec())
             verify { context ->
                 val rs: CardInfoRs = context[CardInfoRs::class]

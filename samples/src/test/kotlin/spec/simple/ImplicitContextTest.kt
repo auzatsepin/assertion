@@ -16,7 +16,7 @@ class ImplicitSumTest {
 
     companion object : Spec {
         override fun spec(): Specification {
-            return specification("sum") {
+            return specification {
                 action { context ->
                     val p: Int = context[SumRq::class]
                     context[SumRs::class] = p + p
@@ -37,7 +37,7 @@ class ImplicitSumTest {
 class ImplicitMulTest : Spec {
 
     override fun spec(): Specification {
-        return specification("mul") {
+        return specification {
             action { context ->
                 val p: Int = context[SumRs::class]
                 context[MulRs::class] = p * p
@@ -57,7 +57,7 @@ class ImplicitSpecInclude {
 
     @Test
     fun `should sum then multiply`() {
-        val context = specification("sum then multiply") {
+        val context = specification {
             include(ImplicitSumTest.spec())
             include(ImplicitMulTest().spec())
         }.invoke(Context().with(SumRq::class to 5))

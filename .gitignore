@@ -31,7 +31,6 @@ hs_err_pid*
 
 # User-specific stuff
 .idea/**/tasks.xml
-.idea/**/dictionaries
 .idea/**/shelf
 
 # Sensitive or high-churn files
@@ -44,7 +43,6 @@ hs_err_pid*
 .idea/**/dbnavigator.xml
 
 # Gradle
-.idea/**/gradle.xml
 .idea/**/libraries
 
 # CMake
@@ -75,16 +73,8 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-# Editor-based Rest Client
-.idea/httpRequests
-
-*.iml
-
-### Eclipse template
-
 .metadata
 bin/
-tmp/
 *.tmp
 *.bak
 *.swp

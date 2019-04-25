@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 
 internal class ContextTest {
 
-    lateinit var context: Context
+    private lateinit var context: Context
 
     @BeforeEach
     fun init() {

@@ -1,6 +1,7 @@
 package spec.http
 
 import com.github.assertion.core.context.Context
+import com.github.assertion.core.dsl.Resolver
 import com.github.assertion.core.dsl.Spec
 import com.github.assertion.core.dsl.Specification
 import com.github.assertion.core.dsl.specification
@@ -25,7 +26,7 @@ class CardStatusSpec(
 ) : Spec {
 
     override fun spec(): Specification {
-        return specification("getCardInfo") {
+        return specification {
             action { context ->
                 resolvers.first {
                     //todo need carried function

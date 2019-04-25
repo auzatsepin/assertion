@@ -1,4 +1,4 @@
-package spec.http
+package com.github.assertion.core.dsl
 
 import com.github.assertion.core.context.Context
 

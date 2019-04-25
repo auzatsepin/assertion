@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 class CardIssueSpec : Spec {
 
     override fun spec(): Specification {
-        return specification("getCardInfo") {
+        return specification {
             action { context ->
                 runBlocking {
                     val issueRq: CardIssueRq = context[CardIssueRq::class]
