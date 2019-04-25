@@ -11,7 +11,7 @@ class CustomSumTest {
 
     companion object : Spec {
         override fun spec(): Specification {
-            return specification("sum") {
+            return specification {
                 action { context ->
                     val p: Int = context["sp"]
                     context["sr"] = p + p
@@ -32,7 +32,7 @@ class CustomSumTest {
 class CustomMulTest : Spec {
 
     override fun spec(): Specification {
-        return specification("mul") {
+        return specification {
             action { context ->
                 val p: Int = context["sr"]
                 context["mr"] = p * p
@@ -52,7 +52,7 @@ class SpecInclude {
 
     @Test
     fun `should sum then multiply`() {
-        val context = specification("sum then multiply") {
+        val context = specification {
             include(CustomSumTest.spec())
             include(CustomMulTest().spec())
         }.invoke(Context().with("sp" to 5))

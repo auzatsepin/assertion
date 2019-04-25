@@ -1,7 +1,6 @@
 package com.github.assertion.core.dsl
 
 import com.github.assertion.core.context.Context
-import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -12,7 +11,7 @@ internal class SpecificationTest {
 
     @Test
     fun `should execute spec with anonymous action`() {
-        specification("anon") {
+        specification {
             action(object : Action {
                 override fun perform(context: Context) {
                     context["third"] = 3
@@ -43,7 +42,7 @@ internal class SpecificationTest {
 
     @Test
     fun `should execute spec with functional action`() {
-        specification("fact") {
+        specification {
             action { context ->
                 context["third"] = 3
             }
@@ -59,7 +58,7 @@ internal class SpecificationTest {
         val outCtxName = "out"
         val context = Context()
         context[inCtxName] = MultiplierIn(2, 2)
-        specification("execute") {
+        specification {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
         }
@@ -71,7 +70,7 @@ internal class SpecificationTest {
         val outCtxName = "out"
         val context = Context()
         context[inCtxName] = MultiplierIn(2, 2)
-        specification("already defined action") {
+        specification {
             action(MultiplyAction(inCtxName, outCtxName))
             verify { context ->
                 val result: MultiplierOut = context[outCtxName]
@@ -86,7 +85,7 @@ internal class SpecificationTest {
         val outCtxName = "out"
         val context = Context()
         context[inCtxName] = MultiplierIn(2, 2)
-        specification("with invoke") {
+        specification {
             action(MultiplyAction(inCtxName, outCtxName))
             verify(MultiplyVerifier(outCtxName, 4))
         }
@@ -97,7 +96,7 @@ internal class SpecificationTest {
         val ex = Assertions.assertThrows(
             AssertionFailedError::class.java
         ) {
-            specification("error") {
+            specification {
                 action {
                     assertEquals("25", "50")
                 }

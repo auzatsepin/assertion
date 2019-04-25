@@ -30,7 +30,7 @@ class NestedSpecificationTest {
         } answers {
             context["nestedOut"] = 200
         }
-        val spec = specification("spec") {
+        val spec = specification {
             action(firstMock)
             specification("innerSpec") {
                 action(secondMock)

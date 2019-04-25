@@ -7,7 +7,6 @@ import com.github.assertion.core.dsl.specification
 import com.github.assertion.samples.http.CardInfoRs
 import com.github.assertion.samples.http.CardIssueRq
 import com.github.assertion.samples.http.CardIssueRs
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
@@ -18,7 +17,7 @@ class CompositeSpec : AbstractTest() {
     companion object : Spec {
 
         override fun spec(): Specification {
-            return specification("issue card and then get info") {
+            return specification {
                 include(CardIssueSpec().spec())
                 include(CardInfoSpec().spec())
                 verify {

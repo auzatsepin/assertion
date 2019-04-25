@@ -33,7 +33,6 @@ class CardStatusResolver : Resolver<CardInfoRq> {
 }
 
 class CardInfoSpec(
-    private val inCtxVarName: Any = CardInfoRq::class,
     private val outCtxVarName: Any = CardInfoRs::class,
     private val resolvers: List<Resolver<CardInfoRq>> = listOf(
         CardInfoRqResolver(),
@@ -42,7 +41,7 @@ class CardInfoSpec(
 ) : Spec {
 
     override fun spec(): Specification {
-        return specification("getCardInfo") {
+        return specification {
             action { context ->
                 resolvers.first {
                     it.resolveAndExecute(context) { rq ->

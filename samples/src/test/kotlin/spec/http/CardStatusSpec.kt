@@ -25,7 +25,7 @@ class CardStatusSpec(
 ) : Spec {
 
     override fun spec(): Specification {
-        return specification("getCardInfo") {
+        return specification {
             action { context ->
                 resolvers.first {
                     //todo need carried function
