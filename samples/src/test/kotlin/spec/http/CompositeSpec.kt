@@ -19,7 +19,7 @@ class CompositeSpec : AbstractTest() {
 
         override fun spec(): Specification {
             return specification("issue card and then get info") {
-                include(CardIssueSpec.spec())
+                include(CardIssueSpec().spec())
                 include(CardInfoSpec().spec())
                 verify {
                     val issueRs: CardIssueRs = it[CardIssueRs::class]
